@@ -19,7 +19,7 @@ To migrate some contents, you only need to call "*@@migrate-types*" view in site
 
 Remember to update the catalog after migration to align metadatas.
 
-.. image:: https://admin.blog.redturtle.it/pypi-images/rt.atmigrator/atmigrator_screenshot.png
+.. image:: http://blog.redturtle.it/pypi-images/rt.atmigrator/atmigrator_screenshot.png
 
 TODO
 ====
