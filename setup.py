@@ -3,6 +3,8 @@ import os
 
 version = '0.1.0'
 
+tests_require = ['plone.app.testing']
+
 setup(name='rt.atmigrator',
       version=version,
       description="A tool that allows to migrate objects from a content-type to another",
@@ -23,6 +25,8 @@ setup(name='rt.atmigrator',
       namespace_packages=['rt'],
       include_package_data=True,
       zip_safe=False,
+      tests_require=tests_require,
+      extras_require=dict(test=tests_require),
       install_requires=[
           'setuptools',
           'Products.contentmigration'
