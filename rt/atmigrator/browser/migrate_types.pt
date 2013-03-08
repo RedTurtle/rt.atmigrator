@@ -22,7 +22,7 @@
     </p>
     
     <form action=""
-      name="confirm_delete"
+      name="migrate_contents"
       method="post"
       tal:attributes="action string:${here/portal_url}/migrate-types">
         

@@ -29,8 +29,14 @@ class ATMigrator(PloneSandboxLayer):
     def setUpPloneSite(self, portal):
         # applyProfile(portal, 'rer.sitesearch:default')
         setRoles(portal, TEST_USER_ID, ['Member', 'Manager'])
-        portal.invokeFactory('Folder 1',
-                                 'folder-1')
+        portal.invokeFactory('Folder',
+                             'folder-1',
+                             title="Folder 1")
+        portal.invokeFactory('Folder',
+                             'folder-2',
+                             title="Folder 2",
+                             description="A folder description")
+
         for i in range(0, 10):
             """
             create some documents
