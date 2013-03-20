@@ -1,6 +1,6 @@
 Introduction
 ============
-This simple package allows to migrate from a portal-type to another.
+This simple package allows to migrate from one portal-type to another.
 This is done by `Products.contentmigration <https://pypi.python.org/pypi/Products.contentmigration>`_, we only provide a simple interface that allows to select source and destination portal_types.
 
 Installation
