@@ -23,7 +23,7 @@ def makeContentMigrator(context, src_type, dst_type):
     return ATContentMigrator
 
 
-def migrateContents(context, src_type, dst_type):
+def migrateContents(context, src_type, dst_type, query={}):
     from Products.contentmigration.walker import CustomQueryWalker
     #BBB: i can't find a better way to know if a given portal_type is folderish or not
     is_folderish = False
@@ -49,6 +49,7 @@ def migrateContents(context, src_type, dst_type):
         walker = CustomQueryWalker(context, migrator,
                                   src_portal_type=src_type,
                                   dst_portal_type=dst_type,
+                                  query=query,
                                   use_savepoint=True)
         walker.go()
         walk_infos = {'error': walker.errors,

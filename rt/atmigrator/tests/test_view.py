@@ -3,7 +3,7 @@ from plone.app.testing import logout
 from rt.atmigrator.testing import ATMIGRATOR_INTEGRATION_TESTING
 from zope.component import getMultiAdapter
 from plone.testing.z2 import Browser
-from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD, SITE_OWNER_NAME, SITE_OWNER_PASSWORD
+from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
 
 
 class TestATMigratorView(unittest.TestCase):
