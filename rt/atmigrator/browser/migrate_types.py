@@ -87,7 +87,7 @@ class MigrateView(BrowserView):
         query = {}
         if self.request.form.get('path', ''):
             path = self.request.form.get('path', '')
-            if "depth" in self.request.form:
+            if "depth" in self.request.form and self.request.form.get('depth') != '':
                 query['path'] = {'query': path,
                                  'depth': int(self.request.form.get('depth', '0'))}
             else:
