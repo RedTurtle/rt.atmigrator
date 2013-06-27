@@ -6,14 +6,27 @@
       metal:use-macro="here/main_template/macros/master"
       i18n:domain="rt.atmigrator">
 
-    <metal:head fill-slot="top_slot"
-                tal:define="dummy python:request.set('disable_border',1)" />
+<metal:head fill-slot="top_slot"
+            tal:define="dummy python:request.set('disable_border',1)" />
+
+<metal:slot fill-slot="css_slot">
+  <style media="all" type="text/css">
+    .migratorTypeSelectors .field {
+      clear: none;
+      float: left;
+      min-width: 300px;
+    }
+  </style>
+</metal:slot>
 
 <div metal:fill-slot="main"
      tal:define="types_list view/getTypesList;
+                 meta_types_list view/getMetaTypesList;
                  errors options/errors|nothing;
                  src_type request/form/src_type|nothing;
                  dst_type request/form/dst_type|nothing;
+                 src_metatype request/form/src_metatype|nothing;
+                 dst_metatype request/form/dst_metatype|nothing;
                  path request/form/path|nothing;
                  depth request/form/depth|nothing;">
 
@@ -27,7 +40,8 @@
       name="migrate_contents"
       method="post"
       tal:attributes="action string:${here/portal_url}/migrate-types">
-        
+      <div class="migratorTypeSelectors">
+        <h3 i18n:translate="migrator_origin_label">Source</h3>
         <div class="field"
              tal:define="error errors/src_type| nothing"
              tal:attributes="class python:error and 'field error' or 'field'">
@@ -55,6 +69,30 @@
           </select>
         </div>
         <div class="field"
+             tal:define="error errors/src_metatype| nothing"
+             tal:attributes="class python:error and 'field error' or 'field'">
+          <label i18n:translate="migrator_src_metatype_label" for="src_metatype">
+               Source meta-type
+          </label>
+          <div class="formHelp" i18n:translate="migrator_src_metatype_help">
+            Select the meta-type to be migrated. If empty, will be used portal-type.
+          </div>
+          <select name="src_metatype" >
+            <option value="" i18n:translate="">
+              -- select a value --
+            </option>
+            <tal:type tal:repeat="type meta_types_list">
+              <option tal:define="type_value type/value"
+                      tal:attributes="value type_value;
+                                      selected python:type_value==src_metatype and 'selected' or ''"
+                  tal:content="type/title"
+                  />
+            </tal:type>
+          </select>
+        </div>
+        <div class="visualClear"><!-- --></div>
+        <h3 i18n:translate="migrator_destination_label">Destination</h3>
+        <div class="field"
              tal:define="error errors/dst_type| nothing"
              tal:attributes="class python:error and 'field error' or 'field'">
           <label i18n:translate="migrator_dsttype_label" for="dst_type">
@@ -80,6 +118,34 @@
             </tal:type>
           </select>
         </div>
+        <div class="field"
+             tal:define="error errors/dst_metatype| nothing"
+             tal:attributes="class python:error and 'field error' or 'field'">
+          <label i18n:translate="migrator_dst_metatype_label" for="dst_metatype">
+               Destination meta-type
+          </label>
+          <span class="fieldRequired" title="Required"
+                            i18n:domain="plone"
+                            i18n:attributes="title title_required;"
+                            i18n:translate="label_required">(Required)</span>
+          <div class="formHelp" i18n:translate="migrator_dst_metatype_help">
+            Select the destination meta-type. If empty, will be used portal-type.
+          </div>
+          <select name="dst_metatype" >
+            <option value="" i18n:translate="">
+              -- select a value --
+            </option>
+            <tal:type tal:repeat="type meta_types_list">
+              <option tal:define="type_value type/value"
+                      tal:attributes="value type_value;
+                                      selected python:type_value==dst_metatype and 'selected' or ''"
+                  tal:content="type/title"
+                  />
+            </tal:type>
+          </select>
+        </div>
+      </div>
+        <div class="visualClear"><!-- --></div>
         <fieldset class="additionalFilter">
           <legend i18n:translate="additional_filters_label">Additional filters</legend>
           <div class="field"

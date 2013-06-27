@@ -9,4 +9,8 @@
   
   <include package=".browser" />
   
+  <utility
+    component=".vocabularies.MetaTypesVocabularyFactory"
+    name="rt.atmigrator.vocabularies.MetaTypesVocabulary"
+    />
 </configure>

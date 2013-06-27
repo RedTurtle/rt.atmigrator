@@ -53,9 +53,11 @@ class MigrateView(BrowserView):
         """
         src_type = self.request.form.get('src_type', '')
         dst_type = self.request.form.get('dst_type', '')
+        src_metatype = self.request.form.get('src_metatype', '')
+        dst_metatype = self.request.form.get('dst_metatype', '')
         query = self.makeQuery()
         logger.info("*********** Migration start ***********")
-        output = migrateContents(self.context, src_type, dst_type, query)
+        output = migrateContents(self.context, src_type, dst_type, src_metatype, dst_metatype, query)
         pu = getToolByName(self.context, "plone_utils")
         pu.addPortalMessage(_("Migration from ${src_type} to ${dst_type}: found ${results} items.",
                               mapping={u"src_type": src_type,
@@ -100,6 +102,15 @@ class MigrateView(BrowserView):
         """
         utility = getUtility(IVocabularyFactory,
                              "plone.app.vocabularies.UserFriendlyTypes")
+        if utility:
+            return utility(self.context)._terms
+
+    def getMetaTypesList(self):
+        """
+        Return list of available meta_types
+        """
+        utility = getUtility(IVocabularyFactory,
+                             "rt.atmigrator.vocabularies.MetaTypesVocabulary")
         if utility:
             return utility(self.context)._terms
 

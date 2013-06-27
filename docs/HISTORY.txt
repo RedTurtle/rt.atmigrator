@@ -5,7 +5,7 @@ Changelog
 ------------------
 
 - Added support for path search [cekk]
-
+- Added meta_type selection support [cekk]
 
 0.1.0 (2013-03-12)
 ------------------

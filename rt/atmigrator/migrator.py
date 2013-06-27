@@ -1,29 +1,33 @@
 # -*- coding: utf-8 -*-
 
 
-def makeFolderMigrator(context, src_type, dst_type):
+def makeFolderMigrator(context, src_type, dst_type, src_metatype, dst_metatype):
     """ generate a migrator for the given at-based folderish portal type """
     from Products.contentmigration.archetypes import InplaceATFolderMigrator
 
     class ATFolderMigrator(InplaceATFolderMigrator):
         src_portal_type = src_type
+        src_meta_type = src_metatype
         dst_portal_type = dst_type
+        dst_meta_type = dst_metatype
 
     return ATFolderMigrator
 
 
-def makeContentMigrator(context, src_type, dst_type):
+def makeContentMigrator(context, src_type, dst_type, src_metatype, dst_metatype):
     """ generate a migrator for the given at-based portal type """
     from Products.contentmigration.archetypes import InplaceATItemMigrator
 
     class ATContentMigrator(InplaceATItemMigrator):
         src_portal_type = src_type
+        src_meta_type = src_metatype
         dst_portal_type = dst_type
+        dst_meta_type = dst_metatype
 
     return ATContentMigrator
 
 
-def migrateContents(context, src_type, dst_type, query={}):
+def migrateContents(context, src_type, dst_type, src_metatype, dst_metatype, query={}):
     from Products.contentmigration.walker import CustomQueryWalker
     #BBB: i can't find a better way to know if a given portal_type is folderish or not
     is_folderish = False
@@ -38,17 +42,27 @@ def migrateContents(context, src_type, dst_type, query={}):
     if is_folderish:
         migrator = makeFolderMigrator(context,
                                      src_type,
-                                     dst_type,)
+                                     dst_type,
+                                     src_metatype,
+                                     dst_metatype)
     else:
         migrator = makeContentMigrator(context,
                                       src_type,
-                                      dst_type,)
+                                      dst_type,
+                                      src_metatype,
+                                      dst_metatype)
     if migrator:
-        migrator.src_meta_type = src_infos.content_meta_type
-        migrator.dst_meta_type = dst_infos.content_meta_type
+        if not src_metatype:
+            src_metatype = src_infos.content_meta_type
+        if not dst_metatype:
+            dst_metatype = dst_infos.content_meta_type
+        migrator.src_meta_type = src_metatype
+        migrator.dst_meta_type = dst_metatype
         walker = CustomQueryWalker(context, migrator,
                                   src_portal_type=src_type,
                                   dst_portal_type=dst_type,
+                                  src_meta_type=src_metatype,
+                                  dst_meta_type=dst_metatype,
                                   query=query,
                                   use_savepoint=True)
         walker.go()
